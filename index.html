@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Multiplication Table</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Multiplication Table Generator</h1>
+    <div class="container">
+        <div class="form-container">
+        <form id="multiplication-form">
+            <label for="min-multiplicand">Minimum Multiplicand:</label>
+            <input type="number" id="min-multiplicand" name="minMultiplicand" required><br><br>
+            <label for="max-multiplicand">Maximum Multiplicand:</label>
+            <input type="number" id="max-multiplicand" name="maxMultiplicand" required><br><br>
+            <label for="min-multiplier">Minimum Multiplier:</label>
+            <input type="number" id="min-multiplier" name="minMultiplier" required><br><br>
+            <label for="max-multiplier">Maximum Multiplier:</label>
+            <input type="number" id="max-multiplier" name="maxMultiplier" required><br><br>
+            <button type="submit">Generate Table</button>
+            <hr>
+        </form>
+        <div class="error" id="error-message"></div>
+    </div>
+        <table id="multiplication-table"></table>
+    </div>
+    <script>
+        document.getElementById('multiplication-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // pareseInt makes it so the argument returns a whole number
+          const minMultiplicand= parseInt(document.getElementById('min-multiplicand').value)
+          const maxMultiplicand=parseInt(document.getElementById('max-multiplicand').value);
+          const minMultiplier=parseInt(document.getElementById('min-multiplier').value);
+          const maxMultiplier =parseInt(document.getElementById('max-multiplier').value);
+          const errorMessage = document.getElementById('error-message');
+          
+          errorMessage.textContent = '';
+          
+          // if statements to check if the user input a Nan (nonnumber)
+          if(isNaN(minMultiplicand) || isNaN(maxMultiplicand) || isNaN(minMultiplier) || isNaN(maxMultiplier)) {
+                errorMessage.textContent = 'Please enter valid numbers.';
+                return;
+
+          }
+          if(minMultiplier > maxMultiplier || minMultiplicand > maxMultiplicand){
+            errorMessage.textContent = " Please enter a number less than or equal to the  max number ";
+            return;
+          }
+
+            // Generate the multiplication table
+            generateTable(minMultiplicand, maxMultiplicand, minMultiplier, maxMultiplier);
+        });
+
+        function generateTable(minMultiplicand, maxMultiplicand, minMultiplier, maxMultiplier) {
+            const table = document.getElementById('multiplication-table');
+            table.innerHTML = '';
+
+            // Create table header
+            let headerRow = '<tr><th></th>';
+            for (let i = minMultiplier; i <= maxMultiplier; i++) {
+                headerRow += `<th>${i}</th>`;
+            }
+            headerRow += '</tr>';
+            table.innerHTML += headerRow;
+
+            // Create table rows
+            for (let i = minMultiplicand; i <= maxMultiplicand; i++) {
+                let row = `<tr><th>${i}</th>`;
+                for (let x = minMultiplier; x <= maxMultiplier; x++) {
+                    row += `<td>${i * x}</td>`;
+                }
+                row += '</tr>';
+                table.innerHTML += row;
+            }
+        }
+    </script>
+</body>
+</html>
